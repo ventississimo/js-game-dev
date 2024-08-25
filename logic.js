@@ -481,44 +481,46 @@ function restartGame(){
 }
 // end of restartGame()
 
-//For mobile devices
-//Declare variable for touch input
+// FOR MOBILE DEVICES
+
+// Declare variable for touch input
 let startX = 0;
 let startY = 0;
 
-//Event listener to capture touch in the screen and assign the x and y coordinates in the startX and startY variable.
-
+// event listener to capture touch in the screen and assigns the x and y coordinates in the startX and startY variable.
 document.addEventListener("touchstart", (e) =>{
 	startX = e.touches[0].clientX;
 	startY = e.touches[0].clientY;
-
 })
 
-// event listener to check where you touch the screen and prevents scrolling
-
+// event listener to check where you touch the screen and prevents scrolling. input targets any element that includes the word tile.
 document.addEventListener("touchmove", (e) =>{
+
 	if(!e.target.className.includes("tile")){
-		return;
+		return
 	}
 
-	e.preventDefault(); //disables scrolling
-}, {passive:false});
+	e.preventDefault(); // disables scrolling
+}, {passive: false});
 
-//listen for the touchend event on the entire document
+// listent for the touchend event on the entire document.
+document.addEventListener("touchend", (e) =>{
 
-document.addEventListener("touched", (e) =>{
-	//check if the element triggered has a class name "title"
+	// check if the element triggered has a class name "tile"
 	if(!e.target.className.includes("tile")){
-		return;
+		return; // exit the function.
 	}
-	// calculate the difference between the initial position and the final touch.
-	let diffX = startX - e.changeTouches[0].clientX;
-	let diffY = startY - e.changeTouches[0].clientY;
+
+	// calculate the difference between the initial touch position and the final touch.
+	let diffX = startX - e.changedTouches[0].clientX;
+	let diffY = startY - e.changedTouches[0].clientY;
 
 	console.log(diffX);
 	console.log(diffY);
-
-	if(Math.abs(diffX) > Math.abs(diffY)) {
+	
+	// Check if the swipe is for horizontal or vertical.
+	// horizontal > vertical
+	if(Math.abs(diffX) > Math.abs(diffY)){
 		// horizontal swipe
 		if(diffX > 0){
 			slideLeft();
@@ -533,7 +535,7 @@ document.addEventListener("touched", (e) =>{
 		// vertical swipe
 		if(diffY > 0){
 			slideUp();
-			setTwo();
+			setTwo()
 		}
 		else{
 			slideDown();
@@ -544,14 +546,14 @@ document.addEventListener("touched", (e) =>{
 	document.getElementById("score").innerText = score;
 
 	setTimeout(()=>{
-			if(hasLost()){
-				alert("Game Over! You have lost the game. Game will restart.")
-				// reset the game
-				restartGame();
-				alert("Press any arrow key to restart.");
-			}
-			else{
-				checkWin();
-			}
-		}, 100); //delay time in miliseconds
+		if(hasLost()){
+			alert("Game Over! You have lost the game. Game will restart.")
+			// reset the game
+			restartGame();
+			alert("Press any arrow key to restart.");
+		}
+		else{
+			checkWin();
+		}
+	}, 100); //delay time in miliseconds
 })
